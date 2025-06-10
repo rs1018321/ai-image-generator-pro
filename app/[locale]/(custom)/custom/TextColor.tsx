@@ -1,0 +1,410 @@
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
+import styles from "./page.module.css";
+import { TwitterLogoIcon } from '@radix-ui/react-icons';
+import { FaFacebookF, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
+
+type FormData = {
+    size: string;
+    age: string[];
+    pages: string[];
+    prompt: string; // 文本框字段
+};
+
+const TextColor: React.FC = () => {
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedPrompt, setSelectedPrompt] = useState<string>(""); // 存储选中的提示文本
+    const [selectedSize, setSelectedSize] = useState<string>("Auto");
+    const defaultImage = "https://picsum.photos/id/1015/300/200";
+    const clearImage = "/imgs/custom/photo.png";
+
+    // 设置表单默认值
+    const defaultFormValues = {
+        size: "Auto",
+        age: [],
+        pages: [],
+        prompt: "Use very minimal, bold outlines with large open spaces and almost no interior texture; suitable for very young children" // 文本框默认值
+    };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, values },
+        setValue,
+    } = useForm<FormData>({
+        defaultValues: defaultFormValues // 应用默认值
+    });
+
+    // 选项与图片的映射关系
+    const promptImageMap = {
+        "Use very minimal, bold outlines with large open spaces and almost no interior texture; suitable for very young children": "https://picsum.photos/id/1005/300/200",
+        "Use simple shapes and primary colors with clear contrast": "https://picsum.photos/id/1015/300/200",
+        "Incorporate soft pastels and rounded edges for a gentle aesthetic": "https://picsum.photos/id/1062/300/200"
+    };
+
+    const onSubmit: SubmitHandler<FormData> = (data) => {
+        axios
+            .post("/your-backend-api-url", {
+                size: selectedSize,
+                age: data.age,
+                prompt: data.prompt,
+                selectedImage: selectedImage || defaultImage,
+            })
+            .then((response) => {
+                console.log("文字颜色处理请求成功，后端返回：", response.data);
+            })
+            .catch((error) => {
+                console.error("请求失败：", error);
+            });
+    };
+
+    const sizeOptions = [
+        { value: "Auto", label: "Auto", ratio: "auto" },
+        { value: "1:1", label: "1:1", ratio: "1/1" },
+        { value: "4:3", label: "4:3", ratio: "4/3" },
+        { value: "3:4", label: "3:4", ratio: "3/4" },
+        { value: "16:9", label: "16:9", ratio: "16/9" },
+        { value: "9:16", label: "9:16", ratio: "9/16" },
+    ];
+
+    const ageOptions = [
+        { value: "1-2", label: "1-2" },
+        { value: "3-4", label: "3-4" },
+        { value: "5-8", label: "5-8" },
+    ];
+    const pagesOptions = [
+        { value: "1", label: "1" },
+        { value: "2", label: "2" },
+        { value: "4", label: "4" },
+    ];
+
+    const photoOptions = [
+        {
+            id: 1,
+            title: "Use very minimal, bold outlines with large open spaces and almost no interior texture; suitable for very young children",
+            image: "https://picsum.photos/id/1005/300/200"
+        },
+        {
+            id: 2,
+            title: "Use simple shapes and primary colors with clear contrast",
+            image: "https://picsum.photos/id/1015/300/200"
+        },
+        {
+            id: 3,
+            title: "Incorporate soft pastels and rounded edges for a gentle aesthetic",
+            image: "https://picsum.photos/id/1062/300/200"
+        }
+    ];
+
+    const handleImageClick = (option: { title: string; image: string }) => {
+        setSelectedPrompt(option.title);
+        setSelectedImage(option.image);
+        setValue("prompt", option.title); // 使用setValue更新表单值
+    };
+
+    const handleClear = () => {
+        setSelectedPrompt("");
+        setSelectedImage(clearImage);
+        setValue("prompt", ""); // 清空文本框
+    };
+
+    const handleSizeSelect = (size: string) => {
+        setSelectedSize(size);
+    };
+
+    return (
+        <div
+            style={{
+                display: "flex",
+                width: "78vw",
+                margin: "0 auto",
+            }}
+        >
+            {/* Select Prompt 区域 */}
+            <div
+                className={styles.handDrawnBorder}
+                style={{
+                    border: "3px solid #000",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    margin: "20px",
+                    flex: "2",
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                <h3 style={{ textAlign: "center", margin: "20px auto", fontSize: "34px" }}>
+                    Select Prompt
+                </h3>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr",
+                        gap: "10px",
+                        maxWidth: "300px",
+                        margin: "0 auto",
+                    }}
+                >
+                    {photoOptions.map((photo, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                textAlign: "left",
+                                cursor: "pointer",
+                                transition: "transform 0.2s",
+                                border: selectedPrompt === photo.title ? "2px solid blue" : "2px dotted #000",
+                                padding: "8px 12px",
+                                borderRadius: "4px",
+                                backgroundColor: selectedPrompt === photo.title ? "#e6f7ff" : "transparent",
+                            }}
+                            onClick={() => handleImageClick(photo)}
+                        >
+                            <div style={{ width: "100%", fontWeight: "bold" }}>
+                                Case {photo.id}:
+                            </div>
+                            <p style={{ margin: "0", fontSize: "18px", color: "#000" }}>
+                                {photo.title}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Describe 区域 */}
+            <div
+                className={styles.handDrawnBorder}
+                style={{
+                    border: "3px solid #000",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    margin: "20px",
+                    flex: "3",
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                <h3 style={{ margin: "0 0 10px 0", fontSize: "55px" }}>Describe</h3>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    style={{ flex: "1", display: "flex", flexDirection: "column" }}
+                >
+                    <div
+                        style={{
+                            width: "80%",
+                            height: "160px",
+                            border: "2px dashed #000",
+                            borderRadius: "8px",
+                            margin: "10px auto 20px auto",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <textarea
+                            {...register("prompt", { required: true })}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                padding: "10px",
+                                fontSize: "18px",
+                                border: "none",
+                                outline: "none",
+                                resize: "none",
+                                backgroundColor: "transparent",
+                            }}
+                            placeholder="输入描述文字..."
+                        />
+                    </div>
+
+                    <div style={{ marginBottom: "15px", display: "flex", flexDirection: "row", gap: "15px" }}>
+                        <label style={{ fontSize: "18px", marginBottom: "8px" }}>Size</label>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                gap: "20px",
+                                paddingBottom: "4px",
+                                scrollbarWidth: "none",
+                            }}
+                            onWheel={(e) => e.preventDefault()}
+                        >
+                            {sizeOptions.map((option) => (
+                                <div key={option.value} style={{ display: "flex", flexDirection: "column" }}>
+                                    <div
+                                        onClick={() => handleSizeSelect(option.value)}
+                                        style={{
+                                            width: "40px",
+                                            minHeight: "40px",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            border: `2px ${selectedSize === option.value ? "solid blue" : "dashed #000"}`,
+                                            borderRadius: "4px",
+                                            cursor: "pointer",
+                                            backgroundColor: selectedSize === option.value ? "#e6f7ff" : "transparent",
+                                            transition: "all 0.2s",
+                                            aspectRatio: option.ratio,
+                                        }}
+                                        data-ratio={option.ratio}
+                                    >
+                                    </div>
+                                    <div style={{ fontSize: "20px", marginTop: "2px", textAlign: "center" }}>
+                                        {option.label}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        {errors.size && (
+                            <span style={{ color: "red", fontSize: "12px", marginTop: "4px", display: "block" }}>
+                                Size 是必填项
+                            </span>
+                        )}
+                    </div>
+
+                    <div style={{ marginBottom: "10px" }}>
+                        <label>Age</label>
+                        {ageOptions.map((option) => (
+                            <label key={option.value} style={{ marginRight: "10px", marginLeft: "25px", fontSize: "28px" }}>
+                                <input
+                                    type="checkbox"
+                                    {...register("age", { required: true })}
+                                    value={option.value}
+                                />
+                                {option.label}
+                            </label>
+                        ))}
+                        {errors.age && (
+                            <span style={{ color: "red", fontSize: "12px" }}>Age 是必填项</span>
+                        )}
+                    </div>
+
+                    <div style={{ marginBottom: "10px" }}>
+                        <label>pages</label>
+                        {pagesOptions.map((option) => (
+                            <label key={option.value} style={{ marginRight: "10px", marginLeft: "25px", fontSize: "28px" }}>
+                                <input
+                                    type="checkbox"
+                                    {...register("pages", { required: true })}
+                                    value={option.value}
+                                />
+                                {option.label}
+                            </label>
+                        ))}
+                        {errors.age && (
+                            <span style={{ color: "red", fontSize: "12px" }}>pages 是必填项</span>
+                        )}
+                    </div>
+                    {errors.prompt && (
+                        <span style={{ color: "red", fontSize: "12px", marginLeft: "25px" }}>
+                            描述文字是必填项
+                        </span>
+                    )}
+                    <div style={{ display: "flex", gap: "40px", marginTop: "auto", marginLeft: "20%" }}>
+                        <button
+                            type="button"
+                            style={{
+                                fontSize: "22px",
+                                backgroundColor: "#D9D9D9",
+                                color: "#FFF",
+                                padding: "0 25px",
+                                fontWeight: "bold",
+                            }}
+                            onClick={handleClear}
+                        >
+                            clear
+                        </button>
+                        <button
+                            type="submit"
+                            style={{
+                                fontSize: "22px",
+                                backgroundColor: "#0070C0",
+                                color: "#FFF",
+                                padding: "0 25px",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            generate
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {/* Result 区域 */}
+            <div
+                className={styles.handDrawnBorder}
+                style={{
+                    border: "3px solid #000",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    margin: "20px",
+                    flex: "3",
+                    display: "flex", flexDirection: "column",
+                }}
+            >
+                <h3 style={{ margin: "0 0 10px 0", fontSize: "55px" }}>Result</h3>
+                <div
+                    style={{
+                        width: "80%",
+                        height: "180px",
+                        border: "2px dashed #000",
+                        margin: "10px auto",
+                        display: "flex", justifyContent: "center", alignItems: "center",
+                    }}
+                >
+                    {selectedImage && selectedImage !== clearImage ? (
+                        <img
+                            src={selectedImage}
+                            alt="result"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                filter: "grayscale(100%)",
+                            }}
+                        />
+                    ) : selectedImage === clearImage ? (
+                        <div style={{ color: "#666", fontSize: "14px", textAlign: "center" }}>
+                            选择提示文字后将显示对应图片
+                        </div>
+                    ) : (
+                        <img
+                            src={defaultImage}
+                            alt="result"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                filter: "grayscale(100%)",
+                            }}
+                        />
+                    )}
+                </div>
+                <div style={{ display: "flex", gap: "5px", marginBottom: "10px", marginTop: "60px", marginLeft: "15px" }}>
+                    <button style={{ fontSize: "14px", backgroundColor: "black", color: "#fff", padding: "8px 15px" }}>
+                        Use as Reference
+                    </button>
+                    <button style={{ fontSize: "14px", backgroundColor: "black", color: "#fff", padding: "8px 15px" }}>
+                        Download Image
+                    </button>
+                </div>
+                <div style={{ display: "flex", flexDirection: "row", paddingTop: "30px", alignItems: "center", marginLeft: "15px" }}>
+                    <span style={{ fontSize: "18px", marginBottom: "5px", marginRight: "20px" }}>Share To</span>
+                    <div style={{ display: "flex", gap: "20px" }}>
+                        <TwitterLogoIcon fontSize={24} />
+                        <FaFacebookF size={24} />
+                        <FaLinkedinIn size={24} />
+                        <FaWhatsapp size={24} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default TextColor;

@@ -35,7 +35,7 @@ interface LandingPageProps {
 
 
 export default function LandingPage({ page, locale }: LandingPageProps) {
- 
+
   const [originalImage, setOriginalImage] = useState<string | null>(null)
   const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -46,7 +46,7 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
   const [textGeneratedImage, setTextGeneratedImage] = useState<string | null>(null)
   const [isGeneratingText, setIsGeneratingText] = useState(false)
   const [textError, setTextError] = useState<string | null>(null)
-  
+
   // 添加尺寸比例状态
   const [imageAspectRatio, setImageAspectRatio] = useState<string>("1:1")
   const [textAspectRatio, setTextAspectRatio] = useState<string>("1:1")
@@ -83,7 +83,7 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
       history.unshift(result)
       // 只保留最近5个结果，减少存储占用
       const limitedHistory = history.slice(0, 5)
-      
+
       // 检查存储大小
       const historyString = JSON.stringify(limitedHistory)
       if (historyString.length > 1024 * 1024) { // 1MB限制
@@ -227,7 +227,7 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
           generatedImageData = base64Prefix + generatedImageData
         }
         setGeneratedImage(generatedImageData)
-        
+
 
         // 保存到历史记录
         saveToHistory({
@@ -294,7 +294,7 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
       const response = await fetch("/api/generate-text-sketch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           prompt: promptText,
           size: getImageSize(textAspectRatio)
         }),
@@ -320,7 +320,7 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
       const errorMessage = error instanceof Error ? error.message : String(error)
       setTextError(errorMessage)
       setDebugInfo("")
-      
+
       // 根据错误类型给出更具体的建议
       if (errorMessage.includes('认证失败')) {
         setTextError("API 认证失败，请联系管理员检查配置")
@@ -360,14 +360,14 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
           )}
         </div>
         <input ref={fileInputRef} type="file" onChange={handleImageUpload} className="hidden" />
-        
+
         {/* 添加尺寸选择器 */}
         <AspectRatioSelector
           value={imageAspectRatio}
           onChange={setImageAspectRatio}
           className="mt-4"
         />
-        
+
         <Button onClick={generateColoringBook} disabled={!originalImage || isGenerating} className="w-full mt-4">
           {isGenerating ? (
             <><Loader2 className="w-4 h-4 animate-spin mr-2" />生成中...</>
@@ -375,21 +375,21 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
             <><Wand2 className="w-4 h-4 mr-2" />生成涂色图</>
           )}
         </Button>
-        
+
         {/* 显示调试信息 */}
         {debugInfo && !isGeneratingText && (
           <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
             {debugInfo}
           </div>
         )}
-        
+
         {/* 显示错误信息 */}
         {error && (
           <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm text-red-800">
             {error}
           </div>
         )}
-        
+
         {generatedImage && (
           <div className="mt-4 text-center">
             <img src={generatedImage} alt="线稿" className="rounded-lg shadow max-h-64 mx-auto" />
@@ -412,14 +412,14 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
           placeholder="例如：一个在海滩玩耍的小孩"
           className="mb-4 w-full aspect-[5/4]"
         />
-        
+
         {/* 添加尺寸选择器 */}
         <AspectRatioSelector
           value={textAspectRatio}
           onChange={setTextAspectRatio}
           className="mb-4"
         />
-        
+
         <Button onClick={generateFromText} disabled={!promptText.trim() || isGeneratingText} className="w-full">
           {isGeneratingText ? (
             <><Loader2 className="w-4 h-4 animate-spin mr-2" />生成中...</>
@@ -427,21 +427,21 @@ export default function LandingPage({ page, locale }: LandingPageProps) {
             <><Wand2 className="w-4 h-4 mr-2" />生成线稿图</>
           )}
         </Button>
-        
+
         {/* 显示调试信息 */}
         {debugInfo && (
           <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
             {debugInfo}
           </div>
         )}
-        
+
         {/* 显示错误信息 */}
         {textError && (
           <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm text-red-800">
             {textError}
           </div>
         )}
-        
+
         {textGeneratedImage && (
           <div className="mt-4 text-center">
             <img src={textGeneratedImage} alt="线稿图" className="rounded-lg shadow max-h-64 mx-auto" />
