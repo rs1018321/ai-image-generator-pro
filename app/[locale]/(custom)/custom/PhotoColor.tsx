@@ -104,16 +104,20 @@ const PhotoColor: React.FC = () => {
         >
             {/* Select Photo 区域 占比 2 */}
             <div
-                className={styles.handDrawnBorder}
                 style={{
-                    border: "7px solid #F0E542",
-                    borderRadius: "15px",
+                    // @ts-ignore
+                    '--border-width': '7px',
+                    '--border-style': 'solid',
+                    '--border-color': '#F0E542',
+                    '--border-radius': '15px',
                     padding: "10px",
                     margin: "20px",
                     flex: "2",
                     display: "flex",
                     flexDirection: "column",
                 }}
+                className={styles.borderHandDrown}
+
             >
                 <h3 style={{ textAlign: "center", margin: "20px auto", fontSize: "34px" }}>
                     Select Photo
@@ -127,6 +131,7 @@ const PhotoColor: React.FC = () => {
                 >
                     {photoOptions.map((photo, index) => (
                         <div
+                            className={styles.borderHandDrown}
                             key={index}
                             style={{
                                 display: "flex",
@@ -135,8 +140,12 @@ const PhotoColor: React.FC = () => {
                                 textAlign: "center",
                                 cursor: "pointer",
                                 transition: "transform 0.2s",
-                                border: selectedImage === photo.imageUrl ? "2px solid blue" : "none",
-                                padding: "5px",
+                                // @ts-ignore
+                                '--border-width': '2px',
+                                '--border-style': 'solid',
+                                '--border-color': selectedImage === photo.imageUrl?'blue':'transparent',
+                                '--border-radius': '15px',
+                                padding: "3px",
                             }}
                             onClick={() => handleImageClick(photo.imageUrl)}
                         >
@@ -169,11 +178,14 @@ const PhotoColor: React.FC = () => {
 
             {/* Upload 区域 占比 3 */}
             <div
-                className={styles.handDrawnBorder}
+                className={styles.borderHandDrown}
                 style={{
-                    border: "7px solid #F0E542",
-                    borderRadius: "15px",
-                    padding: "10px",
+                    // @ts-ignore
+                    '--border-width': '7px',
+                    '--border-style': 'solid',
+                    '--border-color': '#F0E542',
+                    '--border-radius': '15px',
+                    padding: "20px",
                     margin: "20px",
                     flex: "3",
                     display: "flex",
@@ -186,11 +198,15 @@ const PhotoColor: React.FC = () => {
                     style={{ flex: "1", display: "flex", flexDirection: "column" }}
                 >
                     <div
+                        className={styles.borderHandDrown}
                         style={{
+                            // @ts-ignore
+                            '--border-width': '2px',
+                            '--border-style': 'dashed',
+                            '--border-color': '#000',
+                            '--border-radius': '8px',
                             width: "180px",
                             height: "160px",
-                            border: "2px dashed #000",
-                            borderRadius: "8px",
                             margin: "10px auto",
                             display: "flex",
                             justifyContent: "center",
@@ -240,15 +256,20 @@ const PhotoColor: React.FC = () => {
                                 <div key={option.value} style={{ display: "flex", flexDirection: "column" }}>
                                     {/* 尺寸选项框，按比例绘制边框 */}
                                     <div
+                                        className={styles.borderHandDrown}
                                         onClick={() => handleSizeSelect(option.value)}
                                         style={{
+                                            // @ts-ignore
+                                            '--border-width': '2px',
+                                            '--border-style': 'dashed',
+                                            '--border-color': '#000',
+                                            '--border-radius': '8px',
                                             width: "40px",
                                             minHeight: "40px",
                                             display: "flex",
                                             flexDirection: "column",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            border: `2px ${selectedSize === option.value ? "solid blue" : "dashed #000"}`,
                                             borderRadius: "4px",
                                             cursor: "pointer",
                                             backgroundColor: selectedSize === option.value ? "#e6f7ff" : "transparent",
@@ -276,7 +297,16 @@ const PhotoColor: React.FC = () => {
                         <label>Age</label>
                         {ageOptions.map((option) => (
                             <label key={option.value} style={{ marginRight: "10px", marginLeft: "25px", fontSize: "28px" }}>
-                                <input
+                                <input className={styles.borderHandDrown}
+                                       style={{
+                                           border: "none",
+                                           // @ts-ignore
+                                           '--border-width': '2px',
+                                           '--border-style': 'solid',
+                                           '--border-color': '#000',
+                                           '--border-radius': '0px',
+
+                                       }}
                                     type="checkbox"
                                     {...register("age", { required: true })}
                                     value={option.value}
@@ -290,12 +320,19 @@ const PhotoColor: React.FC = () => {
                     </div>
                     <div style={{ display: "flex", gap: "40px", marginTop: "auto", marginLeft: "20%" }}>
                         <button
+                            className={styles.borderHandDrown}
                             type="button"
                             style={{
+                                border: "none",
+                                // @ts-ignore
+                                '--border-width': '8px',
+                                '--border-style': 'solid',
+                                '--border-color': '#D9D9D9',
+                                '--border-radius': '0px',
                                 fontSize: "22px",
                                 backgroundColor: "#D9D9D9",
                                 color: "#FFF",
-                                padding: "0 25px",
+                                padding: "8px 25px",
                                 fontWeight: "bold",
                             }}
                             onClick={handleClear}
@@ -303,8 +340,14 @@ const PhotoColor: React.FC = () => {
                             clear
                         </button>
                         <button
+                            className={styles.borderHandDrown}
                             type="submit"
                             style={{
+                                // @ts-ignore
+                                '--border-width': '8px',
+                                '--border-style': 'dashed',
+                                '--border-color': '#0070C0',
+                                '--border-radius': '8px',
                                 fontSize: "22px",
                                 backgroundColor: "#0070C0",
                                 color: "#FFF",
@@ -320,11 +363,14 @@ const PhotoColor: React.FC = () => {
 
             {/* Result 区域 占比 3 */}
             <div
-                className={styles.handDrawnBorder}
+                className={styles.borderHandDrown}
                 style={{
-                    border: "7px solid #F0E542",
-                    borderRadius: "15px",
-                    padding: "10px",
+                    // @ts-ignore
+                    '--border-width': '7px',
+                    '--border-style': 'solid',
+                    '--border-color': '#F0E542',
+                    '--border-radius': '15px',
+                    padding: "20px",
                     margin: "20px",
                     flex: "3",
                     display: "flex",
@@ -333,10 +379,15 @@ const PhotoColor: React.FC = () => {
             >
                 <h3 style={{ margin: "0 0 10px 0", fontSize: "55px" }}>Result</h3>
                 <div
+                    className={styles.borderHandDrown}
                     style={{
+                        // @ts-ignore
+                        '--border-width': '2px',
+                        '--border-style': 'dashed',
+                        '--border-color': '#000',
+                        '--border-radius': '15px',
                         width: "80%",
                         height: "180px",
-                        border: "2px dashed #000",
                         margin: "10px auto",
                         display: "flex",
                         justifyContent: "center",
@@ -372,10 +423,27 @@ const PhotoColor: React.FC = () => {
                     )}
                 </div>
                 <div style={{ display: "flex", gap: "5px", marginBottom: "10px", marginTop: "60px", marginLeft: "15px" }}>
-                    <button style={{ fontSize: "14px", backgroundColor: "black", color: "#fff", padding: "8px 15px" }}>
+                    <button
+                        className={styles.borderHandDrown}
+
+                        style={{
+                            // @ts-ignore
+                            '--border-width': '8px',
+                            '--border-style': 'dashed',
+                            '--border-color': '#000',
+                            '--border-radius': '15px',
+                            fontSize: "14px", backgroundColor: "black", color: "#fff", padding: "8px 15px" }}>
                         Use as Reference
                     </button>
-                    <button style={{ fontSize: "14px", backgroundColor: "black", color: "#fff", padding: "8px 15px" }}>
+                    <button  className={styles.borderHandDrown}
+
+                             style={{
+                                 // @ts-ignore
+                                 '--border-width': '8px',
+                                 '--border-style': 'dashed',
+                                 '--border-color': '#000',
+                                 '--border-radius': '15px',
+                                 fontSize: "14px", backgroundColor: "black", color: "#fff", padding: "8px 15px" }}>
                         Download Image
                     </button>
                 </div>

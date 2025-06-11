@@ -37,6 +37,8 @@ export default function CustomLayout({
         setTheme(theme === 'light' ? 'dark' : 'light');
     };
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <div className={styles.pageMain} style={backgroundStyle}>
             {/* 顶部导航栏容器 */}
@@ -55,10 +57,41 @@ export default function CustomLayout({
 
                     {/* 导航菜单项（桌面端显示） */}
                     <nav className="hidden md:flex space-x-7 text-gray-800">
-                        <a href="#features" className={clsx("text-gray-800 hover:text-purple-600", styles.headerCircle)} >Pricing</a>
-                        <a href="#pricing" className={clsx("text-gray-800 hover:text-purple-600", styles.headerCircle)}  >Pricing</a>
-                        <a href="#blog" className={clsx("text-gray-800 hover:text-purple-600", styles.headerCircle)}  >Pricing</a>
-                        <a href="#blog" className={clsx("text-gray-800 hover:text-purple-600", styles.headerCircle)} >Pricing</a>
+
+                        <a href="#features"  style={{
+                            // @ts-ignore
+                            '--border-width': '3px',
+                            '--border-style': 'solid',
+                            '--border-color': '#9333ea',
+                            '--border-radius': '0px'
+
+                        }} className={clsx("text-gray-800 hover:text-purple-600", styles.borderHandDrown)} >Pricing</a>
+                        <a href="#pricing"
+                           style={{
+                               // @ts-ignore
+                               '--border-width': '3px',
+                               '--border-style': 'solid',
+                               '--border-color': '#9333ea',
+                               '--border-radius': '0px'
+                           }} className={clsx("text-gray-800 hover:text-purple-600", styles.borderHandDrown)}  >Pricing</a>
+                        <a href="#blog"
+                           style={{
+                               // @ts-ignore
+                               '--border-width': '3px',
+                               '--border-style': 'solid',
+                               '--border-color': '#9333ea',
+                               '--border-radius': '0px'
+                           }}
+                           className={clsx("text-gray-800 hover:text-purple-600", styles.borderHandDrown)}  >Pricing</a>
+                        <a href="#blog"
+                           style={{
+                               // @ts-ignore
+                               '--border-width': '3px',
+                               '--border-style': 'solid',
+                               '--border-color': '#9333ea',
+                               '--border-radius': '0px'
+                           }}
+                           className={clsx("text-gray-800 hover:text-purple-600", styles.borderHandDrown)} >Pricing</a>
                     </nav>
                 </div>
 

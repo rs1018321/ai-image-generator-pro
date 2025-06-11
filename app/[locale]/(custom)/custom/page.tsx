@@ -208,12 +208,16 @@ export default function CustomPage() {
         }
     };
 
+
     // 切换活动组件
     const handleComponentChange = (componentId: string) => {
         setActiveComponent(componentId);
+
     };
 
 
+
+    // @ts-ignore
     return (
         <div>
 
@@ -228,12 +232,20 @@ export default function CustomPage() {
                     </h1>
                 </div>
 
-                <button
+                <div
                     onClick={handleBookmark}
-                    className="bg-black text-white px-3 py-1 rounded cursor-pointer hover:bg-gray-800 transition-colors"
+                    style={{
+                        // @ts-ignore
+                        '--border-width': '8px',
+                        '--border-style': 'dashed',
+                        '--border-color': '#000',
+                        '--border-radius': '15px'
+                }}
+
+                    className={clsx("bg-black text-white px-3 py-1 rounded cursor-pointer hover:bg-gray-800 transition-colors",styles.borderHandDrown)}
                 >
                     Bookmark Site
-                </button>
+                </div>
 
             </div>
 
@@ -243,17 +255,37 @@ export default function CustomPage() {
                 <div className="max-w-4xl mx-auto flex mb-6">
                     <button
                         onClick={() => handleComponentChange("photo")}
-                        className={clsx(`flex-1 py-3 px-4 font-medium transition-colors duration-200 rounded-t-lg ${
+                        style={{
+                            border: "none",
+                            // @ts-ignore
+                            '--border-width': '3px',
+                            '--border-style': 'solid',
+                            '--border-color':  activeComponent === "photo"
+                                ? '#2563eb' : '#e5e7eb', // 非激活状态的颜色,
+                            '--border-radius': '0px'
+                        }}
+                        className={clsx(`photo-button flex-1 py-3 px-4 font-medium transition-colors duration-200 rounded-t-lg ${
                             activeComponent === "photo"
                                 ? "bg-blue-600 text-white hover:bg-blue-700"
                                 : "bg-gray-200 text-white hover:bg-gray-300"
-                        }`,styles.buttonBorder)}
+                        }`,styles.borderHandDrown)}
                     >
                         Photo Color
                     </button>
                     <button
                         onClick={() => handleComponentChange("text")}
-                        className={clsx(`flex-1 py-3 px-4 font-medium transition-colors duration-200 rounded-t-lg ${
+
+                        style={{
+                            border: "none",
+                            // @ts-ignore
+                            '--border-width': '3px',
+                            '--border-style': 'solid',
+                            '--border-color':  activeComponent === "text"
+                                ? '#2563eb' : '#e5e7eb', // 非激活状态的颜色,
+                            '--border-radius': '0px'
+                        }}
+
+                        className={clsx(`text-button flex-1 py-3 px-4 font-medium transition-colors duration-200 rounded-t-lg ${
                             activeComponent === "text"
                                 ? "bg-blue-600 text-white hover:bg-blue-700"
                                 : "bg-gray-200 text-white hover:bg-gray-300"
@@ -284,7 +316,9 @@ export default function CustomPage() {
                 style={{
                     paddingTop: "3rem",
                 }}>
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <h1 style={{
+                        fontFamily: 'dk_crayonistaregular'
+                    }} className="text-xl md:text-2xl font-bold tracking-tight text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">
                         Drag the slider left and right to view the front and back comparison effect
                     </h1>
                 </div>
@@ -311,7 +345,15 @@ export default function CustomPage() {
             <div className={styles.keyFeaturesSection}>
                  <div className={styles.keyFeaturesContainer}>
                     {imgFeatures.map((feature, index) => (
-                        <div key={index} className={clsx(styles.keyFeatureCard, styles.zoomContainer)}>
+                        <div key={index}
+                             style={{
+                                 // @ts-ignore
+                                 '--border-width': '5px',
+                                 '--border-style': 'solid',
+                                 '--border-color': '#f8e71c',
+                                 '--border-radius': '8px'
+                             }}
+                             className={clsx(styles.keyFeatureCard, styles.zoomContainer)}>
                             <div className={styles.featureImageContainer}>
                                 <img
                                     src={feature.image}
@@ -337,7 +379,13 @@ export default function CustomPage() {
             <div className={styles.keyFeaturesSection}>
                  <div className={styles.keyFeaturesContainer}>
                     {keyFeatures.map((feature, index) => (
-                        <div key={index} className={clsx(styles.keyFeatureCard, styles.zoomContainer)}>
+                        <div key={index} style={{
+                            // @ts-ignore
+                            '--border-width': '5px',
+                            '--border-style': 'solid',
+                            '--border-color': '#f8e71c',
+                            '--border-radius': '8px'
+                        }} className={clsx(styles.keyFeatureCard, styles.zoomContainer)}>
                             <div className={styles.featureIconContainer}>
                                 <img src={feature.icon} alt={feature.title} className={styles.featureIcon} />
                             </div>
@@ -361,7 +409,16 @@ export default function CustomPage() {
             {/* 2列card 部分 */}
             <div className={styles.testimonialsContainer}>
                 {testimonials.map((testimonial, index) => (
-                    <div key={index} className={clsx(styles.testimonialCard,styles.zoomContainer)} >
+                    <div key={index}
+                         style={{
+                             // @ts-ignore
+                             '--border-width': '5px',
+                             '--border-style': 'solid',
+                             '--border-color': '#f8e71c',
+                             '--border-radius': '8px'
+                         }}
+
+                         className={clsx(styles.testimonialCard,styles.zoomContainer)} >
                         <div className={styles.testimonialContentWrapper}>
                             <div className={styles.testimonialAvatarContainer}>
                                 <img
@@ -403,7 +460,13 @@ export default function CustomPage() {
             {/* FAQ 折叠面板 */}
             {accordionData.map(item => (
             <div className={clsx(styles.accordionContainerWrapper)}>
-                <div className={clsx(styles.accordionContainer,styles.zoomContainer)}>
+                <div   style={{
+                    // @ts-ignore
+                    '--border-width': '5px',
+                    '--border-style': 'solid',
+                    '--border-color': '#f8e71c',
+                    '--border-radius': '8px'
+                }} className={clsx(styles.accordionContainer,styles.zoomContainer)}>
 
                     <Accordion type="single" collapsible>
                         <AccordionItem key={item.id} value={item.id} >
@@ -427,12 +490,12 @@ export default function CustomPage() {
 
 
             {/* 手绘边框滤镜定义 */}
-            <svg height="0" xmlns="http://www.w3.org/2000/svg">
-                <filter id="hand-drawn">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="turbulence"/>
-                    <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="5" />
-                </filter>
-            </svg>
+            {/*<svg height="0" xmlns="http://www.w3.org/2000/svg">*/}
+            {/*    <filter id="hand-drawn">*/}
+            {/*        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="turbulence"/>*/}
+            {/*        <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="5" />*/}
+            {/*    </filter>*/}
+            {/*</svg>*/}
         </div>
     );
 }
